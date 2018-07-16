@@ -6,5 +6,5 @@ scrumbot/local_settings.py
 *__pycache__
 static/
 media/
-assets/scripts/fe/node_modules/
-assets/scripts/fe/dist/
+assets/fe/node_modules/
+assets/fe/dist/
