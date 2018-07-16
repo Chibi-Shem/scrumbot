@@ -25,7 +25,7 @@ SECRET_KEY = 'z09$8lrum!s6pg^@ek^m_)oh2a%2%@*24(#4gmbi7o1lzj3ow^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'logs',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SLACK_CLIENT_ID = "398793025732.399175532373"
+SLACK_CLIENT_SECRET = "892a51e39586b8bbd37965b01b2489dd"
+SLACK_VERIFICATION_TOKEN = "AI9gDtSXXwZmbGdOZeGCz8Tl"
+SLACK_BOT_USER_TOKEN = "xoxb-398793025732-398488161553-8Brhm4zTVEyZU0C4EOjl2IEc"
