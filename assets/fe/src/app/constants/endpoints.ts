@@ -1,0 +1,1 @@
+export const API_CREATE = (api_name) => '/api/'+api_name+'/create/';
