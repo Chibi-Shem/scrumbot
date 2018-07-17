@@ -17,7 +17,8 @@ class User(AbstractUser):
     """
     User model
     """
-    team = models.ForeignKey('Team', on_delete=models.CASCADE, default=None, null=True)
+    slack_id = models.CharField(max_length=100, default='')
+    team = models.ManyToManyField('Team')
 
     def __str__(self):
         return self.username

@@ -9,13 +9,15 @@ import { APP_STATES } from './app.states';
 import { AppComponent } from './app.component';
 import { CreateTeamComponent } from './components/forms/create-team/create-team.component';
 import { JoinTeamComponent } from './components/prompts/join-team/join-team.component';
+import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     JoinTeamComponent,
-    CreateTeamComponent
+    CreateTeamComponent,
+    SlackLoginComponent
   ],
   imports: [
     BrowserModule,
