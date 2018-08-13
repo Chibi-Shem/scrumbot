@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="col d-flex p-0 align-items-center">
                                         <div *ngIf="!scrum.open">
-                                            <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
+                                            <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="/static/img/confetti.png"></span>
                                             <span class="less-emphasis" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</span>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@
                                             <div class="col">
                                                 <div class="row flex-column mb-5">
                                                     <p class="category_label"><b>Pending</b></p>
-                                                    <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
+                                                    <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="/static/img/confetti.png"></span>
                                                     <div *ngFor="let issue of scrum.issue_logs" class="issueitem mb-3 d-flex" >
                                                         <div class="redmarker align-self-center"></div>
                                                         <div class="d-flex flex-column flex-fill">
@@ -165,7 +165,7 @@
                                                                 <div *ngIf="!issue.open">
                                                                     <div class="d-flex" *ngIf="issue.deadline">
                                                                     <div class="mr-2">
-                                                                        <img src="assets/img/leave.png" class="ml-2">
+                                                                        <img src="/static/img/leave.png" class="ml-2">
                                                                     </div>
                                                                     <p class="less-emphasis category_labelel">{{ issue.deadline | date:'longDate'}} - {{ issue.deadline | date:'shortTime'}}</p>
                                                                     </div>
