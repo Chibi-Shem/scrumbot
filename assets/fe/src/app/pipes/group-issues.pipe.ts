@@ -18,7 +18,6 @@ export class GroupIssuesPipe implements PipeTransform {
             }
             return previous;
         }, {});
-      console.log(Object.keys(grouped_issues).map(date => ({ date, issues: grouped_issues[date] })))
       return Object.keys(grouped_issues).map(date => ({ date, issues: grouped_issues[date] }));
   }
 

@@ -1,5 +1,4 @@
 from rest_framework.response import Response
-from accounts.models import User, Team
 from django.http import QueryDict
 from django.conf import settings
 import json

@@ -1,13 +1,5 @@
 from rest_framework import serializers
-from .models import Team, User, Project
-
-
-class TeamSerializer(serializers.ModelSerializer):
-    """Serializer of a team"""
-
-    class Meta:
-        model = Team
-        fields = ('__all__')
+from .models import User, Project
 
 class ProjectSerializer(serializers.ModelSerializer):
     """Serializer of a project"""
@@ -22,7 +14,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'slack_id', 'team']
+        fields = ['username', 'slack_id']
+
 
 class LoginSerializer(serializers.Serializer):
     """Serializer of a login form"""

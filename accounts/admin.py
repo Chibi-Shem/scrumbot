@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Team, Project
+from .models import User, Project
 
 
 class UserCreationForm(forms.ModelForm):
@@ -30,15 +30,14 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
     fieldsets = (
         (None, {'fields': ('username', 'password', 'slack_id',
-            'team', 'is_staff', 'is_superuser', 'is_active')}),
+            'is_staff', 'is_superuser', 'is_active')}),
     )
     add_fieldsets = (
         (None, {
-            'fields': ('username', 'slack_id', 'password1', 'password2')}
+            'fields': ('username', 'slack_id', 'password1', 'password2', 'is_superuser')}
         ),
     )
         
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Team)
 admin.site.register(Project)

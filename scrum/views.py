@@ -2,11 +2,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import get_object_or_404
-from accounts.models import User, Team, Project
+from accounts.models import User, Project
 from .models import Log, Issue, Scrum
 from accounts.serializers import (
                                 UserSerializer,
-                                TeamSerializer,
                                 ProjectSerializer
                                 )
 from .serializers import (
@@ -41,19 +40,10 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
             data['channel_name'] = slack_json['group']['name_normalized']
 
         try:
-            Team.objects.get(id=data['team_id'])
-        except Team.DoesNotExist:
-            team_data = QueryDict('', mutable=True)
-            team_data['id'] = data['team_id']
-            team_data['domain'] = data['team_domain']
-            self.create(team_data, Team, TeamSerializer)
-
-        try:
             user = User.objects.get(slack_id=data['user_id'])
         except User.DoesNotExist:
             user_data = QueryDict('', mutable=True)
             user_data['username'] = data['user_name']
-            user_data['team'] = data['team_id']
             user_data['slack_id'] = data['user_id']
             user = self.create(user_data, User, UserSerializer)
 
@@ -63,7 +53,6 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
             project_data = QueryDict('', mutable=True)
             project_data['id'] = data['channel_id']
             project_data['name'] = data['channel_name']
-            project_data['team'] = data['team_id']
             project = self.create(project_data, Project, ProjectSerializer)
 
         scrum_data = QueryDict('', mutable=True)
