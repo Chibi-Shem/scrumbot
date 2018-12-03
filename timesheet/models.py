@@ -9,6 +9,7 @@ class Timesheet(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     time_in = models.DateTimeField(auto_now=True)
     time_out = models.DateTimeField(blank=True, null=True)
+    hours = models.FloatField(default=0)
     completed = models.BooleanField(default=False)
 
     def __str__(self):

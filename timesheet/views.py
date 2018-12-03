@@ -77,6 +77,9 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
             time = timesheet[0]
             if not time.completed:
                 time.time_out = timezone.now()
+                time_diff = timezone.now() - time.time_in
+                hours, minutes = time_diff.seconds // 3600, time_diff.seconds // 60 % 60
+                time.hours = float('{}.{}'.format(hours, minutes))
                 time.completed = True
                 time.save()
                 msg = settings.SLACK_BOT_MESSAGE['punchout']
