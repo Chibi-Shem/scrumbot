@@ -13,8 +13,8 @@ class SlackMixin(object):
         slack_data = requests.get(api_url+params)
         return slack_data.json()
 
-    def send_message(self, msg, *args, **kwargs):
-        api_params = settings.SLACK_API_TOKEN+'&channel=CE7QX1EKH'+'&text='+msg
+    def send_message(self, msg, channel, *args, **kwargs):
+        api_params = settings.SLACK_API_TOKEN+'&channel='+channel+'&text='+msg
         self.get_slack_method(settings.SLACK_API_SEND_CHAT, api_params)
 
 

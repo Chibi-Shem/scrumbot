@@ -30,6 +30,7 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
         if data.get('event'):
             slack_user = data.get('event').get('user')
             msg = data.get('event').get('text', None)
+            channel = data.get('event').get('channel')
             if msg is not None:
                 try:
                     user = User.objects.get(slack_id=slack_user)
@@ -46,11 +47,11 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
                 login = [s for s in login_keywords if s in msg.lower()]
                 logout = [s for s in logout_keywords if s in msg.lower()]
                 if login:
-                    self._checkin(user)
+                    self._checkin(user, channel)
                 elif logout:
-                    self._checkout(user)
+                    self._checkout(user, channel)
                 else:
-                    self.send_message(settings.SLACK_BOT_MESSAGE['error'])
+                    self.send_message(settings.SLACK_BOT_MESSAGE['error'], channel)
         return Response(data, status=200)
 
     def time_list(self, *args, **kwargs):
@@ -58,17 +59,17 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
         serializer = self.serializer_class(timesheets, many=True)
         return Response(serializer.data, status=200)
 
-    def _checkin(self, user):
+    def _checkin(self, user, channel):
         work_hours = timezone.now() + timezone.timedelta(hours=14)
         timesheet = Timesheet.objects.filter(user=user, time_in__lt=work_hours)
         if timesheet.exists():
-            self.send_message("You've already punched in today. Type `out` to punch out.")
+            self.send_message("You've already punched in today. Type `out` to punch out.", channel)
         else:
             timesheet = Timesheet(user=user)
             timesheet.save()
-            self.send_message(settings.SLACK_BOT_MESSAGE['punchin'])
+            self.send_message(settings.SLACK_BOT_MESSAGE['punchin'], channel)
 
-    def _checkout(self, user):
+    def _checkout(self, user, channel):
         work_hours = timezone.now() + timezone.timedelta(hours=14)
         timesheet = Timesheet.objects.filter(user=user, time_in__lt=work_hours)
         msg = "You've haven't checkin today. Type `checkin` to punch in."
@@ -81,4 +82,4 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
                 msg = settings.SLACK_BOT_MESSAGE['punchout']
             else: 
                 msg = "You've already checkout today. Try checkin tomorrow. Type `timesheet` to view your timesheet for the day."
-        self.send_message(msg)
+        self.send_message(msg, channel)
