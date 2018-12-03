@@ -27,29 +27,30 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
 
     def time_in(self, *args, **kwargs):
         data = self.request.data
-        slack_user = data.get('event').get('user')
-        msg = data.get('event').get('text', None)
-        if msg is not None:
-            try:
-                user = User.objects.get(slack_id=slack_user)
-            except User.DoesNotExist:
-                api_params = settings.SLACK_API_TOKEN+'&user='+slack_user
-                slack_data = self.get_slack_method(settings.SLACK_API_USERS_INFO, api_params)
-                user_data = {
-                    'username': slack_data['user']['name'],
-                    'slack_id': slack_user
-                }
-                user = self.create(user_data, User, UserSerializer)
-            login_keywords = ['in', 'login', 'timein', 'checkin']
-            logout_keywords = ['out', 'checkout', 'timeout', 'logout']
-            login = [s for s in login_keywords if s in msg.lower()]
-            logout = [s for s in logout_keywords if s in msg.lower()]
-            if login:
-                self._checkin(user)
-            elif logout:
-                self._checkout(user)
-            else:
-                self.send_message(settings.SLACK_BOT_MESSAGE['error'])
+        if data.get('event'):
+            slack_user = data.get('event').get('user')
+            msg = data.get('event').get('text', None)
+            if msg is not None:
+                try:
+                    user = User.objects.get(slack_id=slack_user)
+                except User.DoesNotExist:
+                    api_params = settings.SLACK_API_TOKEN+'&user='+slack_user
+                    slack_data = self.get_slack_method(settings.SLACK_API_USERS_INFO, api_params)
+                    user_data = {
+                        'username': slack_data['user']['name'],
+                        'slack_id': slack_user
+                    }
+                    user = self.create(user_data, User, UserSerializer)
+                login_keywords = ['in', 'login', 'timein', 'checkin']
+                logout_keywords = ['out', 'checkout', 'timeout', 'logout']
+                login = [s for s in login_keywords if s in msg.lower()]
+                logout = [s for s in logout_keywords if s in msg.lower()]
+                if login:
+                    self._checkin(user)
+                elif logout:
+                    self._checkout(user)
+                else:
+                    self.send_message(settings.SLACK_BOT_MESSAGE['error'])
         return Response(data, status=200)
 
     def time_list(self, *args, **kwargs):
