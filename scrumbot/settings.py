@@ -173,8 +173,11 @@ SLACK_API_USERS_INFO = 'https://slack.com/api/users.info?token='
 SLACK_API_SEND_CHAT = 'https://slack.com/api/chat.postMessage?token='
 SLACK_BOT_MESSAGE = {
     'error': "I'm sorry, I don't understand! Sometimes I have an easier time with a few simple keywords.",
+    'punchin_undone': "You've haven't checkin today. Type `checkin` to punch in.",
     'punchin': "You've punched in. To punch out type `out`. Type `timesheet` to view your timesheet for the day.",
-    'punchout': "You've punched out. Type `timesheet` to view your timesheet for the day."
+    'punchout': "You've punched out. Type `timesheet` to view your timesheet for the day.",
+    'punchin_done': "You've already punched in today. Type `out` to punch out.",
+    'punchout_done': "You've already checkout today. Try checkin tomorrow. Type `timesheet` to view your timesheet for the day."
 }
 
 # Allow any settings to be defined in local_settings.py which should be
