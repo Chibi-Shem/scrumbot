@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from django.db.models import Q, Sum
 
 from accounts.models import User
 from accounts.serializers import UserSerializer
@@ -44,12 +45,16 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
                     user = self.create(user_data, User, UserSerializer)
                 login_keywords = ['in', 'login', 'timein', 'checkin']
                 logout_keywords = ['out', 'checkout', 'timeout', 'logout']
+                timesheet_keywords = ['timesheet']
                 login = [s for s in login_keywords if s in msg.lower()]
                 logout = [s for s in logout_keywords if s in msg.lower()]
+                timesheet = [s for s in timesheet_keywords if s in msg.lower()]
                 if login:
                     self._checkin(user, channel)
                 elif logout:
                     self._checkout(user, channel)
+                elif timesheet:
+                    self._timesheet(user, channel)
                 else:
                     self.send_message(settings.SLACK_BOT_MESSAGE['error'], channel)
         return Response(data, status=200)
@@ -85,4 +90,22 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
                 msg = settings.SLACK_BOT_MESSAGE['punchout']
             else: 
                 msg = settings.SLACK_BOT_MESSAGE['punchout_done']
+        self.send_message(msg, channel)
+
+    def _timesheet(self, user, channel):
+        monday = timezone.now() - timezone.timedelta(days=timezone.now().weekday())
+        monday = monday.replace(hour=0,minute=0,second=0,microsecond=0)
+        timesheets = Timesheet.objects.filter(user=user)
+        timesheets = timesheets.filter(Q(time_in__gte=monday) & Q(time_in__lte=timezone.now()))
+        msg = settings.SLACK_BOT_MESSAGE['empty_timesheet']
+        if timesheets.exists():
+            total_hours = timesheets.aggregate(Sum('hours'))['hours__sum']
+            time = timesheets[0]
+            hours_today = str(time.hours)
+            if not time.completed:
+                time_diff = timezone.now() - time.time_in
+                hours, minutes = time_diff.seconds // 3600, time_diff.seconds // 60 % 60
+                hours_today = '{}.{}'.format(hours, minutes)
+                total_hours += float(hours_today)
+            msg = "Hours logged for this week: {:.2f}\nHours logged for today: {}".format(total_hours, hours_today)
         self.send_message(msg, channel)

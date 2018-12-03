@@ -177,7 +177,8 @@ SLACK_BOT_MESSAGE = {
     'punchin': "You've punched in. To punch out type `out`. Type `timesheet` to view your timesheet for the day.",
     'punchout': "You've punched out. Type `timesheet` to view your timesheet for the day.",
     'punchin_done': "You've already punched in today. Type `out` to punch out.",
-    'punchout_done': "You've already checkout today. Try checkin tomorrow. Type `timesheet` to view your timesheet for the day."
+    'punchout_done': "You've already checkout today. Try checkin tomorrow. Type `timesheet` to view your timesheet for the day.",
+    'empty_timesheet': "Your timesheet is empty for the current week."
 }
 
 # Allow any settings to be defined in local_settings.py which should be
