@@ -1,9 +1,9 @@
 import { ContentOnly } from 'app/utils/layouts.utils'
 import { ScrumboardComponent } from 'app/components/containers/scrumboard/scrumboard.component'
 import { IssueboardComponent } from 'app/components/containers/issueboard/issueboard.component'
+import { TimesheetboardComponent } from './components/containers/timesheetboard/timesheetboard.component';
 import { LoginComponent } from 'app/components/forms/login/login.component'
 import { AuthenticationService } from 'app/services/authentication.service';
-import { TimesheetsComponent } from 'app/components/timesheets/timesheets.component';
 
 let HOME_STATE: Object[] = [
     {
@@ -25,7 +25,7 @@ let TIMESHEET_STATE: Object[] = [
     {
         name: 'timesheets',
         url: '/timesheets',
-        views: ContentOnly(TimesheetsComponent),
+        views: ContentOnly(TimesheetboardComponent),
     }
 ];
 

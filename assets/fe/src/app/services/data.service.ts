@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { GET_LOGS,
         GET_ISSUES,
+        GET_TIMESHEETS,
         GET_TEAM_MEMBERS,
         GET_TEAM_PROJECTS } from 'app/constants/endpoints';
 
@@ -33,6 +34,10 @@ export class DataService {
 
   fetchIssues(){
       return this.http.get(GET_ISSUES())
+  }
+
+  fetchTimesheets(){
+      return this.http.get(GET_TIMESHEETS())
   }
 
   getScrums(){

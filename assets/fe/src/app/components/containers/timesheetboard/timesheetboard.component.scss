@@ -1,0 +1,46 @@
+.issues_container{
+    margin: 0 120 0 120;
+}
+
+.issue_box{
+    max-width: 400px;
+}
+
+.issue_details{
+    background-color: white;
+    padding: 30px 40px;
+    box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
+}
+
+.font-bold{
+    font-weight: bold;
+}
+
+.w20-px{
+    width:20px;
+}
+
+.marker_static{
+    width: 5px;
+    height: 61px;
+    margin-right: 30;
+    background-color: #2be5ac;
+}
+
+.summary_box{
+    background-color: #effffa;
+}
+
+.title{
+    font-size: 18px;
+    color: #2be5ac;
+}
+
+.deadline_label{
+    color: #dd2556;
+}
+
+.align-button{
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
