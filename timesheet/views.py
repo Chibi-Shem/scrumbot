@@ -46,9 +46,13 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
                 login_keywords = ['in', 'login', 'timein', 'checkin']
                 logout_keywords = ['out', 'checkout', 'timeout', 'logout']
                 timesheet_keywords = ['timesheet', 'ts']
-                login = [s for s in login_keywords if s in msg.lower()]
-                logout = [s for s in logout_keywords if s in msg.lower()]
-                timesheet = [s for s in timesheet_keywords if s in msg.lower()]
+
+                # messages are sent with a tag, here we only get the keywords AFTER the tag
+                if ' ' in msg:
+                    msg = msg[msg.index(' '):].strip().lower()
+                login = [s for s in login_keywords if s == msg]
+                logout = [s for s in logout_keywords if s == msg]
+                timesheet = [s for s in timesheet_keywords if s == msg]
                 if login:
                     self._checkin(user, channel)
                 elif logout:
