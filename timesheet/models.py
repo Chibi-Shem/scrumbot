@@ -17,6 +17,7 @@ class Timesheet(models.Model):
 
     @property
     def is_late(self):
-        time_in = timezone.now().replace(hour=9, minute=0, second=0, microsecond=0)
-        return self.time_in > time_in
+        today = timezone.localtime(self.time_in)
+        early_time = today.replace(hour=9, minute=0, second=0, microsecond=0)
+        return today > early_time
         

@@ -72,6 +72,8 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
         else:
             timesheet = Timesheet(user=user)
             timesheet.save()
+            if timesheet.is_late:
+                self.send_message(settings.SLACK_BOT_MESSAGE['late'], channel)
             self.send_message(settings.SLACK_BOT_MESSAGE['punchin'], channel)
 
     def _checkout(self, user, channel):
