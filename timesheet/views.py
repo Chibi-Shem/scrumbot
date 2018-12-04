@@ -45,7 +45,7 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
                     user = self.create(user_data, User, UserSerializer)
                 login_keywords = ['in', 'login', 'timein', 'checkin']
                 logout_keywords = ['out', 'checkout', 'timeout', 'logout']
-                timesheet_keywords = ['timesheet']
+                timesheet_keywords = ['timesheet', 'ts']
                 login = [s for s in login_keywords if s in msg.lower()]
                 logout = [s for s in logout_keywords if s in msg.lower()]
                 timesheet = [s for s in timesheet_keywords if s in msg.lower()]
@@ -83,12 +83,13 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
             if not time.completed:
                 time.time_out = timezone.now()
                 time_diff = timezone.now() - time.time_in
-                hours, minutes = time_diff.seconds // 3600, time_diff.seconds // 60 % 60
-                time.hours = float('{}.{}'.format(hours, minutes))
+                hours = time_diff.seconds / 3600
+                hours -= hours % 0.01
+                time.hours = hours
                 time.completed = True
                 time.save()
                 msg = settings.SLACK_BOT_MESSAGE['punchout']
-            else: 
+            else:
                 msg = settings.SLACK_BOT_MESSAGE['punchout_done']
         self.send_message(msg, channel)
 
@@ -101,11 +102,12 @@ class TimeSheetAPI(ViewSet, SlackMixin, CRUDMixin):
         if timesheets.exists():
             total_hours = timesheets.aggregate(Sum('hours'))['hours__sum']
             time = timesheets[0]
-            hours_today = str(time.hours)
+            hours_today = time.hours
             if not time.completed:
                 time_diff = timezone.now() - time.time_in
-                hours, minutes = time_diff.seconds // 3600, time_diff.seconds // 60 % 60
-                hours_today = '{}.{}'.format(hours, minutes)
-                total_hours += float(hours_today)
-            msg = "Hours logged for this week: {:.2f}\nHours logged for today: {}".format(total_hours, hours_today)
+                hours = time_diff.seconds / 3600
+                hours -= hours % 0.01
+                hours_today = hours
+                total_hours += hours_today
+            msg = "Hours logged for this week: {}\nHours logged for today: {}".format(total_hours, hours_today)
         self.send_message(msg, channel)
