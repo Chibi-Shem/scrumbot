@@ -10,5 +10,6 @@ timesheet_list = TimeSheetAPI.as_view({
 app_name = 'timesheets'
 
 urlpatterns = [
-    path('', timesheet_list, name='timesheet')
+    path('', timesheet_list, name='timesheet'),
+    path('timesheets/', timesheet_list, name='timesheet')
 ]

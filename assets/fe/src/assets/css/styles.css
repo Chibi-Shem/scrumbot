@@ -438,15 +438,14 @@
   background-color: #dd2556;
   color: white;
   font-size: 12px;
-  width: 45px;
 }
 
-/* line 23, ../scss/_globals.scss */
+/* line 22, ../scss/_globals.scss */
 .color-custom-gray {
   color: #adb4b7;
 }
 
-/* line 28, ../scss/_globals.scss */
+/* line 27, ../scss/_globals.scss */
 .font-lato-16 {
   font-family: "Lato";
   font-size: 16px;
@@ -459,12 +458,12 @@
   color: #9093a3;
 }
 
-/* line 41, ../scss/_globals.scss */
+/* line 40, ../scss/_globals.scss */
 .mr-5px {
   margin-right: 10px;
 }
 
-/* line 45, ../scss/_globals.scss */
+/* line 44, ../scss/_globals.scss */
 .inital-truncate {
   width: 100px;
   overflow-wrap: hidden;
@@ -480,12 +479,12 @@
   color: #9093a3;
 }
 
-/* line 63, ../scss/_globals.scss */
+/* line 62, ../scss/_globals.scss */
 .header-title-size {
   font-size: 24px;
 }
 
-/* line 67, ../scss/_globals.scss */
+/* line 66, ../scss/_globals.scss */
 .pop-over-issues {
   width: 100%;
   overflow-wrap: hidden;
@@ -496,22 +495,22 @@
   hyphens: auto;
 }
 
-/* line 77, ../scss/_globals.scss */
+/* line 76, ../scss/_globals.scss */
 .override-font-24px {
   font-size: 24px;
 }
 
-/* line 81, ../scss/_globals.scss */
+/* line 80, ../scss/_globals.scss */
 .font-color-black {
   color: #172236;
 }
 
-/* line 85, ../scss/_globals.scss */
+/* line 84, ../scss/_globals.scss */
 .override-14-px {
   font-size: 14px;
 }
 
-/* line 89, ../scss/_globals.scss */
+/* line 88, ../scss/_globals.scss */
 .project_label {
   width: 33%;
   height: 17px;
@@ -526,7 +525,7 @@
   color: #4361ff;
 }
 
-/* line 104, ../scss/_globals.scss */
+/* line 103, ../scss/_globals.scss */
 .select-project {
   width: 107px;
   height: 27px;
@@ -541,13 +540,13 @@
   color: #9093a3;
 }
 
-/* line 118, ../scss/_globals.scss */
+/* line 117, ../scss/_globals.scss */
 .scrumitem {
   box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);
   border: solid 1px #f7f7fa;
 }
 
-/* line 123, ../scss/_globals.scss */
+/* line 122, ../scss/_globals.scss */
 .hours-title {
   height: 19px;
   font-family: Lato;
@@ -561,36 +560,36 @@
   color: #172236;
 }
 
-/* line 136, ../scss/_globals.scss */
+/* line 135, ../scss/_globals.scss */
 .deadline_picker {
   width: 164px;
 }
 
-/* line 140, ../scss/_globals.scss */
+/* line 139, ../scss/_globals.scss */
 .statusbtn {
   width: 185px;
   height: 45px;
 }
 
-/* line 145, ../scss/_globals.scss */
+/* line 144, ../scss/_globals.scss */
 .tabs {
   margin: 0px 30px;
   width: 150px;
 }
 
-/* line 150, ../scss/_globals.scss */
+/* line 149, ../scss/_globals.scss */
 .clickable {
   cursor: pointer;
 }
 
-/* line 154, ../scss/_globals.scss */
+/* line 153, ../scss/_globals.scss */
 .font-lato-16-height-19 {
   height: 19px;
   font-family: "Lato";
   font-size: 16px;
 }
 
-/* line 161, ../scss/_globals.scss */
+/* line 160, ../scss/_globals.scss */
 .mydrp .selectiongroup {
   height: 38px;
 }

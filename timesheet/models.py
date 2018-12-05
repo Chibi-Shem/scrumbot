@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import time
 from django.conf import settings
+from django.contrib.humanize.templatetags.humanize import naturalday
 
 class Timesheet(models.Model):
     """ Timesheet models 
@@ -14,6 +15,10 @@ class Timesheet(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.user, self.is_late)
+
+    @property
+    def humanize_time(self):
+        return naturalday(self.time_in)
 
     @property
     def is_late(self):

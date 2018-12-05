@@ -4,11 +4,13 @@ from .models import Timesheet
 class TimesheetSerializer(serializers.ModelSerializer):
     """ Timesheet Serializer
     """ 
-    is_late = serializers.SerializerMethodField()
+    user_username = serializers.SerializerMethodField()
     
-    def get_is_late(self, obj):
-        return obj.is_late
+
+    def get_user_username(self, obj):
+        return obj.user.username
 
     class Meta:
         model = Timesheet
-        fields = ('user', 'time_in', 'time_out', 'is_late')
+        fields = ('user', 'time_in', 'time_out', 'hours',
+        		'is_late', 'humanize_time', 'user_username')

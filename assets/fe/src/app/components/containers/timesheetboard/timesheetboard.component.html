@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <div class="row issues_container">
+    <div class="row timesheets_container">
         <div class="col pt-5 pb-5 pl-5 pr-5 mt-2 ml-5">
             <div class="row pt-4 pb-4 justify-content-between">
                 <div class="col d-flex flex-column">
@@ -42,10 +42,7 @@
                 </div>
             </div>
             <div class="row mt-3 d-flex">
-                <div class="offset-1 col-2">
-                    <span class="category_label font-bold">User</span>
-                </div>
-                <div class="offset-1 col-2">
+                <div class="offset-4 col-2">
                     <span class="category_label font-bold">Time in</span>
                 </div>
                 <div class="offset-1 col-2">
@@ -55,8 +52,8 @@
                     <span class="category_label font-bold">Hours logged</span>
                 </div>
             </div>
-            <div class="mb-4" *ngFor="let date_group of filtered_issues | groupIssues:'date_created' ">
-                <div *ngIf="isWithinDate(date_group.date, filter_from, filter_to) && filteredExists(date_group.issues)">
+            <div class="mb-4" *ngFor="let date_group of filtered_timesheets | groupTimesheets:'time_in' ">
+                <div *ngIf="isWithinDate(date_group.date, filter_from, filter_to) && filteredExists(date_group.timesheets)">
                     <div class="row mb-3">
                         <div class="col-sm-2 d-flex">
                             <span class="align-self-center grey-border less-emphasis">{{ returnToDisplayHumanizeTime(date_group)}}{{ date_group.date | date:'longDate'}}</span>
@@ -66,75 +63,34 @@
                         </div>
                     </div>
                     <div class="d-flex flex-column m-0 scrumlist">
-                        <div *ngFor="let issue of date_group.issues">
-                            <div *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && (filter_status=='' || issue.status==filter_status) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)" class="d-flex align-items-center scrumitem mt-1 mb-1">
-                                <app-marker [project]="issue.scrum_data.project_name"></app-marker>
+                        <div *ngFor="let timesheet of date_group.timesheets">
+                            <div *ngIf="(filter_user=='' || timesheet.user_username==filter_user) && isWithinDate(timesheet.time_in, filter_from, filter_to)" class="d-flex align-items-center scrumitem mt-1 mb-1">
                                 <div class="d-flex flex-fill align-items-center" >
                                     <div class="col-3 d-flex mr-0">
                                         <div class="pt-2">
-                                            <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
+                                            <app-avatar [username]="timesheet.user_username" [id]="timesheet.user_username"></app-avatar>
                                         </div>
                                         <div class="ml-3 pt-2 w-75">
-                                            <p class=" mb-0 pb-0 user text-truncate w-100 font-lato-16-height-19">{{ issue.scrum_data.user_username }}</p>
-                                            <span class="less-emphasis category_label mt-0 pt-0">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
+                                            <p class=" mb-0 pb-0 user text-truncate w-100 font-lato-16-height-19">{{ timesheet.user_username }}</p>
+                                            <span class="less-emphasis category_label mt-0 pt-0">{{ timesheet.time_in | date:'shortTime'}} </span>
                                         </div>
                                     </div>
-                                    <div class="col-2 d-flex align-items-center mr-0 ml-0 pl-0">
-                                        <span class="project_label font-lato-16-height-19">#{{ issue.scrum_data.project_name }}</span>
+                                    <div class="col-3 offset-1 d-flex p-0 align-items-center">
+                                        <div class="d-inline-block timesheet_box text-truncate">
+                                            <p class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19">{{ timesheet.time_in | date:'shortTime' }}</p>
+                                        </div>
+                                         <p *ngIf="timesheet.is_late" class="urgent m-0 pt-1 pl-1 pr-1 ml-4 rounded-left rounded-right pb-0">Late</p>
                                     </div>
                                     <div class="col-2 offset-1 d-flex p-0 align-items-center">
-                                        <div class="d-inline-block issue_box text-truncate">
-                                            <p class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19">{{ issue.issue }}</p>
+                                        <div class="d-inline-block timesheet_box text-truncate">
+                                            <p class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19">{{ timesheet.time_out | date:'shortTime' }}</p>
                                         </div>
-                                         <p *ngIf="issue.is_urgent" class="urgent m-0 pt-1 pl-1 pr-1 ml-4 rounded-left rounded-right pb-0">Urgent</p>
                                     </div>
-                                    <div *ngIf="issue.deadline" class="col d-flex align-items-center justify-content-end pr-0 mr-0">
-                                        <span class="deadline_label font-lato-16">{{ issue.deadline | date:'mediumDate'}} - {{ issue.deadline | date:'shortTime'}}</span>
-                                    </div>
-                                    <div *ngIf="!issue.deadline" class="col d-flex align-items-center justify-content-end pr-5 mr-0">
-
-                                        - -
-                                    </div>
-                                    <sat-popover #issueDetail class="mr-4 whole-issue-pop-over" verticalAlign="center" horizontalAlign="before" forceAlignment>
-                                        <div class="issue_details">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex">
-                                                    <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
-                                                    <div class="ml-3">
-                                                        <span class="font-lato-16 font-color-black">{{ issue.scrum_data.user_username }}</span>
-                                                        <br>
-                                                        <span class="less-emphasis category_label font-lato-16 override-14-px">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
-                                                    </div>
-                                                </div>
-                                                <p *ngIf="issue.is_urgent" class="urgent pt-1 pl-1 pr-1 rounded-left rounded-right">Urgent</p>
-                                            </div>
-                                            <div class="pt-4 pop-over-issues">
-                                                <p class="font-lato-16 font-color-black">{{issue.issue}}</p>
-                                            </div>
-                                            <div class="d-flex">
-                                                <div class="d-flex flex-column mr-3">
-                                                    <span class="label less-emphasis pb-2">Date</span>
-                                                    <div class="input-group">
-                                                    <input type="text" bsDatepicker class="form-control border deadline_picker font-lato-16" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today"/>
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
-                                                            <fa-icon [icon]="icons.angle_down" class="less-emphasis"></fa-icon>
-                                                        </button>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column">
-                                                    <span class="label less-emphasis pb-2">Time</span>
-                                                    <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' (isValid)="updateDeadline(issue.id, issue.deadline)"></timepicker>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex mt-2">
-                                                <button #rButton type="button" class="statusbtn btn btn-outline-success col-6 mr-2" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
-                                                <button #cButton type="button" class="statusbtn btn btn-outline-warning col-6" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
-                                            </div>
+                                    <div class="col-3 offset-1 d-flex p-0 align-items-center">
+                                        <div class="d-inline-block timesheet_box text-truncate">
+                                            <p class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19">{{ timesheet.hours }}</p>
                                         </div>
-                                    </sat-popover>
-                                    <fa-icon [icon]="icons.ellipsis" class="less-emphasis clickable pr-4" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()"></fa-icon>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -81,6 +81,7 @@ export class TimesheetboardComponent implements OnInit {
   users: {}
 
   filtered_timesheets: any
+  filter_user = ''
 
   ngOnInit() {
       this.fetchTimesheets()
@@ -104,6 +105,42 @@ export class TimesheetboardComponent implements OnInit {
                 this.filtered_timesheets = data
               }
           );
+  }
+
+  isWithinDate(timesheet_date, filter_from, filter_to){
+    return (new Date(timesheet_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
+            new Date(timesheet_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
+  }
+
+  setDateToFilter(to){
+      this.filter_to = new Date(to.date.year,
+                                  to.date.month-1,
+                                  to.date.day);
+
+      var tomorrow = new Date(this.filter_to.getFullYear(),
+                      this.filter_to.getMonth(),
+                      this.filter_to.getDate()+1)
+
+      this.disabled_to.year = tomorrow.getFullYear()
+      this.disabled_to.month = tomorrow.getMonth()+1
+      this.disabled_to.day = tomorrow.getDate()
+  }
+
+  filteredExists(to_filter){
+    let x = to_filter.filter(x => {
+        return x.user_username.search(new RegExp(this.filter_user, 'i')) >= 0
+      });
+    return x.length;
+  }
+  
+  returnToDisplayHumanizeTime(data){
+    const humanize_time = data.timesheets[0].humanize_time.charAt(0).toUpperCase() + data.timesheets[0].humanize_time.slice(1);
+    if (humanize_time == "Today" || humanize_time == "Tomorrow" || humanize_time == "Yesterday"){
+       return humanize_time + " - ";
+    }else{
+      return "";
+    }
+    
   }
 
 }
